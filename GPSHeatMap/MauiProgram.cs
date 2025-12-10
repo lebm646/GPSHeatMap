@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MPowerKit.GoogleMaps;
 
 namespace GPSHeatMap
 {
@@ -8,15 +9,15 @@ namespace GPSHeatMap
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+            .UseMauiApp<App>()
+            .UseMPowerKitGoogleMaps(
+            #if IOS
+                "AIzaSyAAvtrQtjEBkfKAjjoXZBABg6So_xUe6LY"
+            #endif
+            );
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
