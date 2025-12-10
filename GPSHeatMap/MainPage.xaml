@@ -4,6 +4,7 @@
              x:Class="GPSHeatMap.MainPage"
              xmlns:gm="clr-namespace:MPowerKit.GoogleMaps;assembly=MPowerKit.GoogleMaps">
     <gm:GoogleMap x:Name="MyMap" 
-                     MapType="Normal"/> 
-
+                  MyLocationButtonEnabled="True"
+                  MyLocationEnabled="True"
+                  MapType="Normal"/> 
 </ContentPage>

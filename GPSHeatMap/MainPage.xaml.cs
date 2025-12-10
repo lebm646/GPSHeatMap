@@ -26,6 +26,14 @@ namespace GPSHeatMap
         {
             base.OnAppearing();
 
+            var location = await GetCurrentLocationAsync();
+            if (location != null)
+            {
+                var point = new Point(location.Latitude, location.Longitude);
+                // Move the map to the current user's location
+                MyMap.MoveCamera(CameraUpdateFactory.NewLatLngZoom(point, 15));
+            }
+
             RequestAndTrackLocation();
             
         }
@@ -57,7 +65,7 @@ namespace GPSHeatMap
             var dispatcher = Application.Current?.Dispatcher;
             if (dispatcher != null)
             {
-                dispatcher.StartTimer(TimeSpan.FromSeconds(5), () =>
+                dispatcher.StartTimer(TimeSpan.FromSeconds(2), () =>
                 {
                     TrackLocationAsync();
                     return true; // true = repeat timer
@@ -76,9 +84,6 @@ namespace GPSHeatMap
                 return;
 
             var mapPos = new Point(location.Latitude, location.Longitude);
-
-            // Move the map to the current user's location
-            MyMap.MoveCamera(CameraUpdateFactory.NewLatLngZoom(mapPos, 15));
 
             await _locationDb.AddLocationAsync(new UserLocation
             {
