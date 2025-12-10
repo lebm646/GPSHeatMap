@@ -29,6 +29,6 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Can we use your location at all times?</string>
+	<string>We need your location to show your position on the map and generate a heatmap.</string>
 </dict>
 </plist>

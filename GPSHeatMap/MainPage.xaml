@@ -3,5 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GPSHeatMap.MainPage"
              xmlns:gm="clr-namespace:MPowerKit.GoogleMaps;assembly=MPowerKit.GoogleMaps">
-    <gm:GoogleMap />
+    <gm:GoogleMap x:Name="MyMap" 
+                     MapType="Normal"/> 
+
 </ContentPage>
