@@ -4,4 +4,4 @@
              x:Class="GPSHeatMap.MainPage"
              xmlns:gm="clr-namespace:MPowerKit.GoogleMaps;assembly=MPowerKit.GoogleMaps">
     <gm:GoogleMap />
-</ContentPage
+</ContentPage>
