@@ -1,16 +1,25 @@
 ﻿using Microsoft.Maui.Devices.Sensors;
 using GPSHeatMap.Services;
+using GPSHeatMap.Data;
+using GPSHeatMap.Models;
 using MPowerKit.GoogleMaps;
 using Microsoft.Maui.Graphics;
 using Microsoft.VisualBasic;
+using FileSystem = Microsoft.Maui.Storage.FileSystem;
+
+
 
 namespace GPSHeatMap
 {
     public partial class MainPage : ContentPage
     {
+        private LocationDatabase _locationDb;
+
         public MainPage()
         {
             InitializeComponent();
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "location.db3");
+            _locationDb = new LocationDatabase(dbPath);
         }
 
         protected override async void OnAppearing()
@@ -71,22 +80,34 @@ namespace GPSHeatMap
             // Move the map to the current user's location
             MyMap.MoveCamera(CameraUpdateFactory.NewLatLngZoom(mapPos, 15));
 
-            // Create a Pin and set it as the map's pins (clear previous)
-            var pin = new Pin
+            await _locationDb.AddLocationAsync(new UserLocation
             {
-                Position = mapPos,
-                Title = "You are here"
+                Latitude = location.Latitude,
+                Longitude = location.Longitude,
+                Timestamp = DateTime.UtcNow
+            });
+
+            // Update heatmap
+            await UpdateHeatMapAsync();
+        }
+
+        private async Task UpdateHeatMapAsync()
+        {
+            var locations = await _locationDb.GetAllLocationsAsync();
+
+            if (locations == null || locations.Count == 0)
+                return;
+
+            var heatData = locations.Select(l => new WeightedLatLng(new Point(l.Latitude, l.Longitude), 1f)).ToList();
+
+            var heatOverlay = new HeatMapTileOverlay
+            {
+                Data = heatData,
+                Radius = 25,
+                MaxIntensity = 1f
             };
 
-            if (MyMap.Pins is System.Collections.IList existingPins)
-            {
-                existingPins.Clear();
-                existingPins.Add(pin);
-            }
-            else
-            {
-                MyMap.Pins = new System.Collections.ObjectModel.ObservableCollection<Pin> { pin };
-            }
+            MyMap.TileOverlays = new List<HeatMapTileOverlay> { heatOverlay };
         }
     }
 }
