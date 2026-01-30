@@ -8,4 +8,4 @@ This is a cross-platform mobile application built using .NET MAUI that visualize
 - Visualize GPS data on a heatmap.
 
 ## Demo
-![App Demo Android](Resources/Images/demo.png)
+![App Demo Android](GPSHeatMap/Resources/Images/demo.png)
